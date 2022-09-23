@@ -1,0 +1,70 @@
+- create project using: django-admin python manage.py startproject restfulcrudapi .
+- start app using: python manage.py startapp employeeapi
+- add employeeapi to settings.py. 
+- pipenv install djangorestframework
+- add 'rest_framework' to installed apps in settings.py
+- set up postgres DB. 
+- pipenv install psycopg2-binary
+
+- To Configure PostgresAPI:
+- sudo -u postgres psql
+- configures settings file: 
+
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': 'employeedb',
+                'USER': 'petsembi',
+                'PASSWORD': '123456',
+                'HOST': 'localhost',
+                'PORT': '',
+            }
+        }
+
+- do migrations: python manage.py migrate. Do this after saving settings.py file
+
+- configure models.py to create a new model. 
+
+- python manage.py makemigrations employeeapi
+python manage.py migrate.
+
+- create a new file called serializers.py inside employeeapi folder. 
+- inside the serializers file, import serializers from rest_framework. 
+Import also Employee class from .models
+
+create EmployeeSerializerClass: inside it create class meta, where we define the model and the fields. 
+
+- Inside employeeapi folder, create a file called viewsets.py
+    from rest_framework import viewsets
+    from . import models
+    from . import serializers
+
+create viewset class. 
+inside it have a queryset attribute which will fetch all data in Employee model.
+we then define theseraializer class which defines how to convert the data to json
+
+- we will have the following methods inside viewset class:
+    - list(): for listing all db values.
+    - retrieve(): for fetching db data
+    - create(): for creating db data
+    - update(); for updating db data
+    - destroy(): for deleting db data
+
+we have to map urls to this functions. 
+for this, create file router.py inside restfulapicrud folder
+
+- inside the main urls.py file, create a route for api
+path('api/', include(router.urls))
+
+- in the browser go this url http://127.0.0.1:8000/api/employee/
+- you are able to post data, get etc
+- install postman on the system
+- from this you can add data to the db
+- enter the url in the url input field. from this you will get data from the db in json format
+- for post operation, you need to add headers first, then json data. 
+specify content-type: application/json
+inside body, specify raw, then enter the data
+-to get a specific entry, add the id to the url http://127.0.0.1:8000/api/employee/2
+-to do a put request (update), add the id to the end of the url
+specify content type to application/json in the header
+
